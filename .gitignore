@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+mqttclient
+
+# .vscode files
+.vscode 
+
+# private files
+Private.h
+private.h
+
