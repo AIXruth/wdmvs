@@ -1,10 +1,9 @@
-#define SENSORS 5
+#define SENSORS 3
 
 struct sensor_struct {
-    uint PIN;
+    unsigned int PIN;
     std::string PUBLISHTOPIC;
     std::string SNAME;
-    bool invert;
-    uint value;
+    int value;
 };
 

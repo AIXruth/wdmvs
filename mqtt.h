@@ -1,3 +1,13 @@
+#include <iostream>
+#include <mosquittopp.h>
+#include <string>
+#include <cstring>
+
+/* 
+#include <cstdio>
+#include <thread>
+#include <future> 
+*/
 
 #define SUBSCRIBE_TOPIC "WDMVS/BACK2PI"
 #include "private.h"
@@ -9,13 +19,6 @@
 #define USER "mqttpi"
 #define PASSWORD "pWd123"
 #endif
-
-#include <iostream>
-#include <mosquittopp.h>
-#include <cstring>
-#include <cstdio>
-#include <thread>
-#include <future>
 
 #define MAX_PAYLOAD 50
 #define DEFAULT_KEEP_ALIVE 60
