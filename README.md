@@ -7,4 +7,5 @@ In the main loop I detect the activities in a ~60s loop and send the result via 
 
 As sensors I use a "Piezo blatt, percussion, vibration, schock sensor" and a "sw-420 sensor module".
 
-
+To build the binary you have to install libmosquitto-dev and wiringPi from https://github.com/WiringPi/WiringPi.git
+then just type "make" and execute ./mqttclient
