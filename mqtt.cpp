@@ -37,8 +37,11 @@ void mqtt_client::on_connect(int rc) {
 void mqtt_client::on_disconnect(int rc) {
   std::cout << ">> myMosq - disconnection(" << rc << ")" << std::endl;
   do {
-    connect(host, port, keepalive);
-  } while (!MOSQ_ERR_SUCCESS);
+    //connect(host, port, keepalive);
+    rc=reconnect();
+    std::cout << ">> myMosq - try to reconnect (" << rc << ")" << std::endl;
+    //sleep(60);
+  } while (rc != MOSQ_ERR_SUCCESS);
 }
 
 void mqtt_client::on_subscribe(int mid, int qos_count, const int *granted_qos) {

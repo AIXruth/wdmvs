@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
   int delay=1;
   while (1) {
     int r = 0;
+    // the next loop will create a metric, how often the sensor[i] is on HIGH by increasing value.
     while (r <= 600) {  // delay loop
       for (int i = 0; i < SENSORS; i++) {
         if ( digitalRead(sensor[i].PIN) == 1 ) 
@@ -54,9 +55,9 @@ int main(int argc, char *argv[]) {
         r++;
       }
     }
-    int sum=0;
-    int len[SENSORS];
-    string s[SENSORS];
+    int sum=0; // metric to see activity
+    int len[SENSORS]; //length variable for iot_client
+    string s[SENSORS];  //var to send string for iot_client
     for (int a = 0; a < SENSORS; a++) {
       s[a] = to_string(sensor[a].value);
       len[a] = s[a].length();
