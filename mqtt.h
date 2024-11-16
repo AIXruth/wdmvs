@@ -2,6 +2,7 @@
 #include <mosquittopp.h>
 #include <string>
 #include <cstring>
+#include <stdlib.h>
 
 /* 
 #include <cstdio>
