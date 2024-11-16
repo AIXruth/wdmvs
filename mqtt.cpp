@@ -42,7 +42,7 @@ void mqtt_client::on_disconnect(int rc) {
     std::cout << ">> myMosq - try to reconnect (" << rc << ")" << std::endl;
     //sleep(60);
   } while (rc != MOSQ_ERR_SUCCESS);
-  std::cout << ">> myMosq -  re-connected" << rc << std::endl;
+  std::cout << ">> myMosq -  re-connected=" << rc << std::endl;
 }
 
 void mqtt_client::on_subscribe(int mid, int qos_count, const int *granted_qos) {
@@ -51,51 +51,53 @@ void mqtt_client::on_subscribe(int mid, int qos_count, const int *granted_qos) {
 #endif
 }
 
-void mqtt_client::on_message(
-    const struct mosquitto_message *message) {  // Back channel, if needed
-  //   int payload_size = MAX_PAYLOAD + 1;
-  //   char buf[payload_size];
-  // #ifdef DEBUG
-  //   std::cout << "message->payload=" << message->payload << std::endl;
-  // #endif
+void mqtt_client::on_message(const struct mosquitto_message *message) {  // Back channel, if needed
+  int payload_size = MAX_PAYLOAD + 1;
+  char buf[payload_size];
+#ifdef DEBUG
+  std::cout << "message->payload=" << message->payload << std::endl;
+#endif
 
-  //   if (!message->payload) return;
+  if (!message->payload) return; 
 
-  //   if (!strcmp(message->topic, SUBSCRIBE_TOPIC)) {
-  //     memset(buf, 0, payload_size * sizeof(char));
+  if (!strcmp(message->topic, SUBSCRIBE_TOPIC))
+  {
+    memset(buf, 0, payload_size * sizeof(char));
 
-  //     /* Copy N-1 bytes to ensure always 0 terminated. */
-  //     memcpy(buf, message->payload, MAX_PAYLOAD * sizeof(char));
+    /* Copy N-1 bytes to ensure always 0 terminated. */
+    memcpy(buf, message->payload, MAX_PAYLOAD * sizeof(char));
 
-  // #ifdef DEBUG
-  //     std::cout << buf << std::endl;
-  // #endif
+#ifdef DEBUG
+    std::cout << buf << std::endl;
+#endif
 
-  //     // Examples of messages for M2M communications...
-  //     if (!strcmp(buf, "STATUS")) {
-  //       snprintf(buf, payload_size, "This is a Status Message...");
-  //       publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
-  // #ifdef DEBUG
-  //       std::cout << "Status Request Recieved." << std::endl;
-  // #endif
-  //     }
+    //     // Examples of messages for M2M communications...
+    //     if (!strcmp(buf, "STATUS")) {
+    //       snprintf(buf, payload_size, "This is a Status Message...");
+    //       publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
+    // #ifdef DEBUG
+    //       std::cout << "Status Request Recieved." << std::endl;
+    // #endif
+    //     }
 
-  //     if (!strcmp(buf, "ON")) {
-  //       snprintf(buf, payload_size, "Turning on...");
-  //       publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
-  // #ifdef DEBUG
-  //       std::cout << "Request to turn on." << std::endl;
-  // #endif
-  //     }
+    //     if (!strcmp(buf, "ON")) {
+    //       snprintf(buf, payload_size, "Turning on...");
+    //       publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
+    // #ifdef DEBUG
+    //       std::cout << "Request to turn on." << std::endl;
+    // #endif
+    //     }
 
-  //     if (!strcmp(buf, "OFF")) {
-  //       snprintf(buf, payload_size, "Turning off...");
-  //       publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
-  // #ifdef DEBUG
-  //       std::cout << "Request to turn off." << std::endl;
-  // #endif
-  //     }
-  //   }
+    if (!strcmp(buf, "OFF"))
+    { // strcmp returns 0 for a match
+      snprintf(buf, payload_size, "Turning off...");
+      publish(NULL, SUBSCRIBE_TOPIC, strlen(buf), buf);
+      system("halt -p");
+#ifdef DEBUG
+      std::cout << "Request to turn off." << std::endl;
+#endif
+    }
+  }
 }
 
 void mqtt_client::on_publish(int mid) {
